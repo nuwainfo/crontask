@@ -554,6 +554,16 @@ main() {
     * )
       die "Unknown type [$type]"
   esac
+  
+  # ping hchk start
+  if [[ -n "$hchk" ]] && [[ ! "$hchk" == " " ]]; then
+    webhook="https://healthchecks.nuwainfo.com/ping/$hchk/start"
+    if curl -s $webhook > /dev/null ; then
+      log "Call to [$webhook]: OK"
+    else
+      alert "Call to [$webhook]: FAILED"
+    fi
+  fi
 
   log "Now timing the command [$progtime -p bash -c $runcmd1 $runcmd2 $command 1> $f_stdout 2> $f_stderr > $f_timing]"
   # /usr/bin/time -o-- doesn't work on MacOS
